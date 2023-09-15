@@ -3,6 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import './App.css';
 import LoginButton from './Auth/login';
+import Header from './components/user/Header';
 
 function App() {
   const [data, setData] = useState<any[]>([]);
@@ -15,6 +16,7 @@ function App() {
   return (
     <>
       <div>
+        <Header />
         <LoginButton />
       </div>
       <div>
