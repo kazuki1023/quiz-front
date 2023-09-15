@@ -4,6 +4,7 @@ import axios from 'axios';
 import './App.css';
 import LoginButton from './Auth/login';
 import Header from './components/user/Header';
+import Footer from './components/user/Footer';
 
 function App() {
   const [data, setData] = useState<any[]>([]);
@@ -15,13 +16,10 @@ function App() {
   }, []);
   return (
     <>
-      <div>
         <Header />
         <LoginButton />
-      </div>
-      <div>
         {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : 'Loading...'}
-      </div>
+        <Footer />
     </>
   );
 }
