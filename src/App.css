@@ -526,6 +526,10 @@ body {
   width: 50px;
 }
 
+.p-sns__item__instagram {
+  max-width: 75%;
+}
+
 .p-line {
   margin-top: 64px;
 }
