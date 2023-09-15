@@ -6,7 +6,7 @@ const Header = () => {
       <div className="p-header__inner">
         <ul className="p-header__sns p-sns">
           <li className="p-sns__item">
-            <a href="https://twitter.com/posse_program" target="_blank" rel="noopener noreferrer" className="p-sns__item__link" aria-label="Twitter">
+            <a href="https://twitter.com/kazu261326236" target="_blank" rel="noopener noreferrer" className="p-sns__item__link" aria-label="Twitter">
               <img src="/twitter.svg" alt="twitter"/>
             </a>
           </li>
