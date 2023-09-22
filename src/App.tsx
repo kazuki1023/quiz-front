@@ -8,21 +8,46 @@ import Quiz from './components/quiz/Quiz';
 import Footer from './components/user/Footer';
 
 function App() {
-  const [data, setData] = useState<any[]>([]);
-
+  const [data, setData] = useState<Array<{
+    id: number;
+    content: string;
+    img: string;
+    choices: Array<{ answer: string; valid: number; }>;
+  }>>([]);
   useEffect(() => {
-    axios.get('http://localhost/api/v1')
-      .then(response => setData(response.data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+  axios.get('http://localhost/api/v1')
+    .then(response => {
+      const fetchedData = response.data.data; // ここでAPIからのデータを取得
+
+      // fetchedDataをQuizProps.quizDataの形に整形
+      const formattedData = fetchedData.map((quiz: any) => {
+        return {
+          id: quiz.id,
+          content: quiz.content,
+          img: quiz.img,
+          choices: quiz.choices.map((choice: any) => {
+            return {
+              answer: choice.answer,
+              valid: choice.valid
+            };
+          })
+        };
+      });
+
+      setData(formattedData);
+    })
+    .catch(error => console.error('Error fetching data:', error));
+}, []);
   return (
     <>
       <Header />
       <LoginButton />
       {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : 'Loading...'}
       <div className="p-quiz-container l-container">
-        <Quiz />
-      </div>
+          {data.map((quiz, index) => (
+            <Quiz key={index} quizData={quiz} />
+          ))}
+        </div>
       <Footer />
     </>
   );
