@@ -24,6 +24,8 @@ const Quiz: React.FC<QuizProps> = ({ quizData }) => {
     setIsCorrect(valid === 1);
   };
 
+  const correctAnswerText = quizData.choices.find(choice => choice.valid === 1)?.answer || "";
+
   return (
     <>
       <section className="p-quiz-box js-quiz" data-quiz="0">
@@ -43,7 +45,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData }) => {
           ))}
         </ul>
         {isCorrect !== null && (
-          <AnswerBox title={isCorrect ? "正解" : "不正解"} text="正解の選択肢" />
+          <AnswerBox title={isCorrect ? "正解" : "不正解"} text={correctAnswerText} isCorrect={isCorrect}/>
         )}
       </section>
     </>
