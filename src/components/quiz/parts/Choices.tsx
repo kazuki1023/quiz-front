@@ -8,7 +8,7 @@ interface ChoiceProps {
     answer: string;
     valid: number;
   };
-  onChoiceClick: () => void;
+  onChoiceClick: (valid: number) => void;
   isDisabled: boolean;
 }
 
@@ -17,7 +17,7 @@ const Choices: React.FC<ChoiceProps> = ({ choiceData, onChoiceClick, isDisabled 
   // const [isCorrect, setIsCorrect] = useState(false);
   const toggleSelected = () => {
     setIsSelected(!isSelected); // 状態をトグル
-    onChoiceClick();
+    onChoiceClick(choiceData.valid);
   };
   return (
     <li className="p-quiz-box__answer__item">

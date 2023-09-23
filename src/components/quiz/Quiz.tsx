@@ -17,9 +17,11 @@ interface QuizProps {
 
 const Quiz: React.FC<QuizProps> = ({ quizData }) => {
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isCorrect, setIsCorrect] = useState<null | boolean>(null);
 
-  const handleChoiceClick = () => {
+  const handleChoiceClick = (valid: number) => {
     setIsDisabled(true); // 一つの選択肢がクリックされたら全て無効にする
+    setIsCorrect(valid === 1);
   };
 
   return (
@@ -37,10 +39,12 @@ const Quiz: React.FC<QuizProps> = ({ quizData }) => {
 
         <ul className="p-quiz-box__answer__list">
           {quizData.choices.map((choice, index) => (
-            <Choices key={index} choiceData={choice} isDisabled={isDisabled} onChoiceClick={handleChoiceClick} />
+            <Choices key={index} choiceData={choice} isDisabled={isDisabled} onChoiceClick={(valid) => handleChoiceClick(valid)}  />
           ))}
         </ul>
-        <AnswerBox title="正解or不正解" text="正解の選択肢"/>
+        {isCorrect !== null && (
+          <AnswerBox title={isCorrect ? "正解" : "不正解"} text="正解の選択肢" />
+        )}
       </section>
     </>
   )
