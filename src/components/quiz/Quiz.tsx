@@ -1,5 +1,6 @@
 import React from 'react'
 import Choices from './parts/Choices';
+import AnswerBox from './parts/Answer';
 import { useState } from 'react';
 
 interface QuizProps {
@@ -39,6 +40,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData }) => {
             <Choices key={index} choiceData={choice} isDisabled={isDisabled} onChoiceClick={handleChoiceClick} />
           ))}
         </ul>
+        <AnswerBox title="正解or不正解" text="正解の選択肢"/>
       </section>
     </>
   )
