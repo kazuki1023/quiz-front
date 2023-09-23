@@ -1,5 +1,6 @@
 import React from 'react'
 import Choices from './parts/Choices';
+import { useState } from 'react';
 
 interface QuizProps {
   quizData: {
@@ -13,7 +14,13 @@ interface QuizProps {
   };
 }
 
-const Quiz:  React.FC<QuizProps> = ({ quizData }) => {
+const Quiz: React.FC<QuizProps> = ({ quizData }) => {
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const handleChoiceClick = () => {
+    setIsDisabled(true); // 一つの選択肢がクリックされたら全て無効にする
+  };
+
   return (
     <>
       <section className="p-quiz-box js-quiz" data-quiz="0">
@@ -23,13 +30,13 @@ const Quiz:  React.FC<QuizProps> = ({ quizData }) => {
             <span className="p-quiz-box__question__title__text">{quizData.content}</span>
           </h2>
           <figure className="p-quiz-box__question__image">
-            <img src={`./quiz/${quizData.img}`}   alt="クイズのイメージ" />
+            <img src={`./quiz/${quizData.img}`} alt="クイズのイメージ" />
           </figure>
         </div>
 
         <ul className="p-quiz-box__answer__list">
-        {quizData.choices.map((choice, index) => (
-            <Choices key={index} choiceData={choice} />
+          {quizData.choices.map((choice, index) => (
+            <Choices key={index} choiceData={choice} isDisabled={isDisabled} onChoiceClick={handleChoiceClick} />
           ))}
         </ul>
       </section>
