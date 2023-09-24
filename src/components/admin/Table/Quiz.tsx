@@ -24,8 +24,14 @@ const rows = [
   createData('Cupcake', 305, 3.7, 67, 4.3),
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
+// const [data, setData] = useState<Array<{
+//   id: number;
+//   content: string;
+//   img: string;
+//   choices: Array<{ answer: string; valid: number; }>;
+// }>>([]);
 
-export default function BasicTable() {
+const QuizTable = () =>  {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -58,3 +64,4 @@ export default function BasicTable() {
     </TableContainer>
   );
 }
+export default QuizTable;
