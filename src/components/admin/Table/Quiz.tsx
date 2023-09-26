@@ -40,8 +40,8 @@ const QuizTable = () => {
           <TableRow>
             <TableCell>問題番号</TableCell>
             <TableCell align="left">問題文</TableCell>
-            <TableCell align="right">編集</TableCell>
-            <TableCell align="right">削除</TableCell>
+            <TableCell align="center">編集</TableCell>
+            <TableCell align="center">削除</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
