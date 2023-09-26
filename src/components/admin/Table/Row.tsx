@@ -10,8 +10,15 @@ interface RowProps {
     id: number;
     content: string;
   };
+  onDelete: (id: number) => void;
 }
-const Row: React.FC<RowProps> = ({ data }) => {
+const Row: React.FC<RowProps> = ({ data, onDelete }) => {
+  const handleDelete = () => {
+    const isConfirmed = window.confirm("この問題を削除してよろしいですか？");
+    if (isConfirmed) {
+      onDelete(data.id);
+    }
+  }
   return (
     <TableRow
       key={data.id}
@@ -30,7 +37,7 @@ const Row: React.FC<RowProps> = ({ data }) => {
       </TableCell>
       <TableCell component="th" scope="rows">
         <Tooltip title="削除">
-          <IconButton sx={{ p:0 }}>
+          <IconButton sx={{ p:0 }} onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>

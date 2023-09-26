@@ -17,8 +17,9 @@ const QuizTable = () => {
     id: number;
     content: string;
   }>>([]);
+
   useEffect(() => {
-    axios.get('http://localhost/api/v1')
+    axios.get('http://localhost/api/v1/quiz')
       .then(response => {
         const fetchedData = response.data.data; // ここでAPIからのデータを取得
         // fetchedDataをQuizProps.quizDataの形に整形
@@ -33,6 +34,38 @@ const QuizTable = () => {
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);
+
+  const handleDeleteQuiz = (id: number) => {
+    // ここでAPI呼び出しを行う
+    axios.delete(`http://localhost/api/v1/quiz/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Quiz successfully deleted!");
+
+          // データの更新 (再取得)
+          axios.get('http://localhost/api/v1/quiz')
+            .then(response => {
+              const fetchedData = response.data.data; // APIからのデータを取得
+              // fetchedDataをQuizProps.quizDataの形に整形
+              const formattedData = fetchedData.map((quiz: any) => {
+                return {
+                  id: quiz.id,
+                  content: quiz.content,
+                };
+              });
+
+              setData(formattedData);
+            }
+            )
+            .catch(error => console.error('Error fetching data after delete:', error));
+        }
+
+      })
+      .catch((error) => {
+        console.error("Error deleting quiz:", error);
+      });
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -46,7 +79,7 @@ const QuizTable = () => {
         </TableHead>
         <TableBody>
           {datas.map((data) => (
-            <Row key={data.id} data={data} />
+            <Row key={data.id} data={data} onDelete={handleDeleteQuiz} />
           ))}
         </TableBody>
       </Table>
