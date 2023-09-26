@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Row from './Row';
 
 
 
@@ -16,8 +17,9 @@ const QuizTable = () => {
     id: number;
     content: string;
   }>>([]);
+
   useEffect(() => {
-    axios.get('http://localhost/api/v1')
+    axios.get('http://localhost/api/v1/quiz')
       .then(response => {
         const fetchedData = response.data.data; // ここでAPIからのデータを取得
         // fetchedDataをQuizProps.quizDataの形に整形
@@ -32,6 +34,19 @@ const QuizTable = () => {
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);
+
+  const handleDeleteQuiz = (id: number) => {
+    // ここでAPI呼び出しを行う
+    axios.delete(`http://localhost/api/v1/quiz/${id}`)
+      .then((response) => {
+        const newDatas = datas.filter((data) => data.id !== id);
+        setData(newDatas);
+      })
+      .catch((error) => {
+        console.error("Error deleting quiz:", error);
+      });
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -39,23 +54,13 @@ const QuizTable = () => {
           <TableRow>
             <TableCell>問題番号</TableCell>
             <TableCell align="left">問題文</TableCell>
-            <TableCell align="right">編集</TableCell>
-            <TableCell align="right">削除</TableCell>
+            <TableCell align="center">編集</TableCell>
+            <TableCell align="center">削除</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {datas.map((data) => (
-            <TableRow
-              key={data.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="rows">
-                {data.id}
-              </TableCell>
-              <TableCell component="th" scope="rows">
-                {data.content}
-              </TableCell>
-            </TableRow>
+            <Row key={data.id} data={data} onDelete={handleDeleteQuiz} />
           ))}
         </TableBody>
       </Table>
