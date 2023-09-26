@@ -39,27 +39,8 @@ const QuizTable = () => {
     // ここでAPI呼び出しを行う
     axios.delete(`http://localhost/api/v1/quiz/${id}`)
       .then((response) => {
-        if (response.status === 200) {
-          console.log("Quiz successfully deleted!");
-
-          // データの更新 (再取得)
-          axios.get('http://localhost/api/v1/quiz')
-            .then(response => {
-              const fetchedData = response.data.data; // APIからのデータを取得
-              // fetchedDataをQuizProps.quizDataの形に整形
-              const formattedData = fetchedData.map((quiz: any) => {
-                return {
-                  id: quiz.id,
-                  content: quiz.content,
-                };
-              });
-
-              setData(formattedData);
-            }
-            )
-            .catch(error => console.error('Error fetching data after delete:', error));
-        }
-
+        const newDatas = datas.filter((data) => data.id !== id);
+        setData(newDatas);
       })
       .catch((error) => {
         console.error("Error deleting quiz:", error);
