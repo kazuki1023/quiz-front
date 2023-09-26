@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Row from './Row';
 
 
 
@@ -45,17 +46,7 @@ const QuizTable = () => {
         </TableHead>
         <TableBody>
           {datas.map((data) => (
-            <TableRow
-              key={data.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="rows">
-                {data.id}
-              </TableCell>
-              <TableCell component="th" scope="rows">
-                {data.content}
-              </TableCell>
-            </TableRow>
+            <Row key={data.id} data={data} />
           ))}
         </TableBody>
       </Table>
