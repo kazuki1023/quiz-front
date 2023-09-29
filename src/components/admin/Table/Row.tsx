@@ -27,12 +27,12 @@ const Row: React.FC<RowProps> = ({ data, onDelete }) => {
       <TableCell component="th" scope="rows">
         {data.id}
       </TableCell>
-      <TableCell component="th" scope="rows">
+      <TableCell component="th" scope="rows" align="left">
         {data.content}
       </TableCell>
-      <TableCell component="th" scope="rows">
+      <TableCell component="th" scope="rows" align="left">
         <Tooltip title="編集、更新ができます" arrow>
-          <Button sx={{ p: 0 }}>編集</Button>
+          <Button sx={{ p: 0, m: 0}}>編集</Button>
         </Tooltip>
       </TableCell>
       <TableCell component="th" scope="rows">
