@@ -12,6 +12,9 @@ import { FormControl } from '@mui/base/FormControl';
 import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -48,7 +51,10 @@ const EditPage = () => {
         console.error('Error fetching data:', error);
         setIsLoading(false);
       });
-  }, []);
+  }, [id]);
+
+  const defaultChoice = data?.choices.find(choice => choice.valid === 1);
+  console.log(defaultChoice);
   if (isLoading) {
     return (
       <>
@@ -57,40 +63,92 @@ const EditPage = () => {
       </>
     );// データがロード中の場合、ローディングメッセージを表示
   }
+
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(event.currentTarget);
+
+    // ここでフォームデータを収集
+    const formData = new FormData(event.currentTarget);
+    console.log(formData);
+    const jsonData: Record<string, any> = {};
+    formData.forEach((value, key) => {
+      jsonData[key] = value;
+    });
+
+    try {
+      const response = await axios.put(`http://localhost/api/v1/quiz/${id}`, jsonData, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.status === 200) {
+        console.log('更新に成功しました！');
+        // 必要であれば、他のロジック（例：ページのリダイレクト）をここに追加
+      } else {
+        console.error('更新に失敗しました');
+      }
+    } catch (error) {
+      console.error('エラー:', error);
+    }
+  };
+
+  const [content, setContent] = useState<string | null>(null); // ここでフォームのデータを管理
+  const handleContentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(event.currentTarget.value);
+    console.log(content)
+  }
+
   return (
     <>
       <Header />
-      <FormControl >
-        <Container maxWidth="sm">
-          <Box
-            component="form"
-            sx={{
-              '& > :not(style)': { m: 1, width: '25ch' },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField id="standard-basic" label="問題番号" variant="standard" defaultValue={data?.id} disabled />
-            <TextareaAutosize id="standard-basic" placeholder="問題文" defaultValue={data?.content} />
-            <CardMedia
-              component="img"
-              height="194"
-              image={data?.img}
-              alt="問題の写真"
-            />
-            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}sx={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              display: 'flex',
-            }} >
-              Upload file
-              <VisuallyHiddenInput type="file" />
+      <form action="" method="put" onSubmit={handleSubmit}>
+        <FormControl >
+          <Container maxWidth="sm">
+            <Box
+              sx={{
+                '& > :not(style)': { m: 1, width: '25ch' },
+              }}
+            >
+              <TextField id="standard-basic" label="問題番号" variant="standard" defaultValue={data?.id} disabled/>
+              <TextareaAutosize id="standard-basic" placeholder="問題文" defaultValue={data?.content} name="content" onChange={handleContentChange}/>
+              <CardMedia
+                component="img"
+                height="194"
+                image={data?.img}
+                alt="問題の写真"
+              />
+              <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                display: 'flex',
+              }} >
+                Upload file
+                <VisuallyHiddenInput type="file" />
+              </Button>
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue={defaultChoice ? defaultChoice.answer : ""}
+                name="choices[]"
+              >
+                {
+                  data?.choices.map((choice, index) => (
+                    <React.Fragment key={index} >
+                      <TextField label="正解の選択肢" variant="standard" defaultValue={choice.answer} name='text'/>
+                      <FormControlLabel control={<Radio />} value={choice.answer} label="" sx={{ mb: 2 }} name='valid' />
+                    </React.Fragment>
+                  ))
+                }
+              </RadioGroup>
+            </Box>
+            <Button type="submit" variant="contained" color="primary">
+              更新する
             </Button>
-            <TextField id="standard-basic" label="問題番号" variant="standard" defaultValue={data?.id} />
-            <TextField id="standard-basic" label="問題番号" variant="standard" defaultValue={data?.id} />
-          </Box>
-        </Container>
-      </FormControl>
+          </Container>
+        </FormControl>
+      </form>
     </>
   );
 }
