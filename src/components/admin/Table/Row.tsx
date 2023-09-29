@@ -1,9 +1,9 @@
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface RowProps {
   data: {
@@ -20,6 +20,10 @@ const Row: React.FC<RowProps> = ({ data, onDelete, onEdit }) => {
       onDelete(data.id);
     }
   }
+  const handleEdit = () => {
+    onEdit(data.id);
+  }
+
   return (
     <TableRow
       key={data.id}
@@ -33,7 +37,9 @@ const Row: React.FC<RowProps> = ({ data, onDelete, onEdit }) => {
       </TableCell>
       <TableCell component="th" scope="rows" align="left">
         <Tooltip title="編集、更新ができます" arrow >
-          <Button sx={{ p: 0, m: 0}} onClick={onEdit} >編集</Button>
+        <IconButton sx={{ p:0 }} onClick={handleEdit}>
+            <EditIcon />
+          </IconButton>
         </Tooltip>
       </TableCell>
       <TableCell component="th" scope="rows">
