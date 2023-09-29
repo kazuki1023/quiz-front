@@ -11,8 +11,9 @@ interface RowProps {
     content: string;
   };
   onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
 }
-const Row: React.FC<RowProps> = ({ data, onDelete }) => {
+const Row: React.FC<RowProps> = ({ data, onDelete, onEdit }) => {
   const handleDelete = () => {
     const isConfirmed = window.confirm("この問題を削除してよろしいですか？");
     if (isConfirmed) {
@@ -31,8 +32,8 @@ const Row: React.FC<RowProps> = ({ data, onDelete }) => {
         {data.content}
       </TableCell>
       <TableCell component="th" scope="rows" align="left">
-        <Tooltip title="編集、更新ができます" arrow>
-          <Button sx={{ p: 0, m: 0}}>編集</Button>
+        <Tooltip title="編集、更新ができます" arrow >
+          <Button sx={{ p: 0, m: 0}} onClick={onEdit} >編集</Button>
         </Tooltip>
       </TableCell>
       <TableCell component="th" scope="rows">

@@ -6,7 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useState, useEffect } from 'react';
+import { useState, useEffect ,} from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Row from './Row';
 
@@ -47,6 +48,11 @@ const QuizTable = () => {
       });
   };
 
+  const navigate = useNavigate();
+  const handleNavigateToEdit = (id: number) => {
+    navigate(`/quiz/${id}`);
+};
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -60,7 +66,7 @@ const QuizTable = () => {
         </TableHead>
         <TableBody>
           {datas.map((data) => (
-            <Row key={data.id} data={data} onDelete={handleDeleteQuiz} />
+            <Row key={data.id} data={data} onDelete={handleDeleteQuiz} onEdit={() => handleNavigateToEdit(data.id)}/>
           ))}
         </TableBody>
       </Table>
