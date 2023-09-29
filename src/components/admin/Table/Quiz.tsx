@@ -7,9 +7,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useState, useEffect ,} from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Row from './Row';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -49,9 +49,9 @@ const QuizTable = () => {
   };
 
   const navigate = useNavigate();
-  const handleNavigateToEdit = (id: number) => {
-    navigate(`/quiz/${id}`);
-};
+  const handleEditQuiz = (id: number) => {
+    navigate(`/admin/${id}`);
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -66,7 +66,7 @@ const QuizTable = () => {
         </TableHead>
         <TableBody>
           {datas.map((data) => (
-            <Row key={data.id} data={data} onDelete={handleDeleteQuiz} onEdit={() => handleNavigateToEdit(data.id)}/>
+            <Row key={data.id} data={data} onDelete={handleDeleteQuiz} onEdit={handleEditQuiz}/>
           ))}
         </TableBody>
       </Table>

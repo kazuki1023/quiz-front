@@ -8,6 +8,7 @@ import Home from './pages/Quizpage';
 import SignIn from './pages/SignInpage';
 import SignUp from './pages/SignUppage';
 import AdminPage from './pages/AdminPage';
+import EditPage from './pages/EditPage';
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
         </Routes>
         <Routes>
           <Route path={`/admin`} element={<AdminPage />} />
+        </Routes>
+        <Routes>
+          <Route path={`/admin/:id`} element={<EditPage />} />
         </Routes>
 
       </BrowserRouter>
