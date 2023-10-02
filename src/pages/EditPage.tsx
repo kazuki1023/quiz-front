@@ -54,6 +54,9 @@ const EditPage = () => {
       });
   }, [id]);
 
+// 問題文を取得
+const contentRef = useRef<HTMLTextAreaElement>(null);
+
 // 選択肢を取得
 const [choiceRefs, setChoiceRefs] = useState<React.RefObject<HTMLInputElement>[]>([]);
 useEffect(() => {
@@ -119,7 +122,7 @@ useEffect(() => {
               }}
             >
               <TextField id="standard-basic" label="問題番号" variant="standard" defaultValue={data?.id} disabled/>
-              <TextareaAutosize id="standard-basic" placeholder="問題文" defaultValue={data?.content} name="content" />
+              <TextareaAutosize id="standard-basic" placeholder="問題文" defaultValue={data?.content} name="content" ref={contentRef}/>
               <CardMedia
                 component="img"
                 height="194"
