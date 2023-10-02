@@ -3,7 +3,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import Container from '@mui/material/Container';
 import axios from 'axios'
 import TextField from '@mui/material/TextField';
@@ -37,6 +37,8 @@ const EditPage = () => {
     choices: Array<{ answer: string; valid: number; }>;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const defaultChoice = data?.choices.find(choice => choice.valid === 1);
+
   // idから問題を取得
   useEffect(() => {
     setIsLoading(true);
@@ -45,7 +47,6 @@ const EditPage = () => {
         const fetchedData = response.data.data; // ここでAPIからのデータを取得
         setData(fetchedData);
         setIsLoading(false);
-        console.log(fetchedData);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -53,8 +54,17 @@ const EditPage = () => {
       });
   }, [id]);
 
-  const defaultChoice = data?.choices.find(choice => choice.valid === 1);
-  console.log(defaultChoice);
+// 選択肢を取得
+const [choiceRefs, setChoiceRefs] = useState<React.RefObject<HTMLInputElement>[]>([]);
+useEffect(() => {
+  if (data?.choices) {
+    // data.choicesの長さに基づいて新しいuseRef配列を作成
+    const newRefs = data.choices.map(() => React.createRef<HTMLInputElement>());
+    setChoiceRefs(newRefs);
+  }
+}, [data]);
+
+
   if (isLoading) {
     return (
       <>
@@ -95,11 +105,7 @@ const EditPage = () => {
     }
   };
 
-  const [content, setContent] = useState<string | null>(null); // ここでフォームのデータを管理
-  const handleContentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(event.currentTarget.value);
-    console.log(content)
-  }
+
 
   return (
     <>
@@ -113,7 +119,7 @@ const EditPage = () => {
               }}
             >
               <TextField id="standard-basic" label="問題番号" variant="standard" defaultValue={data?.id} disabled/>
-              <TextareaAutosize id="standard-basic" placeholder="問題文" defaultValue={data?.content} name="content" onChange={handleContentChange}/>
+              <TextareaAutosize id="standard-basic" placeholder="問題文" defaultValue={data?.content} name="content" />
               <CardMedia
                 component="img"
                 height="194"
@@ -136,7 +142,7 @@ const EditPage = () => {
                 {
                   data?.choices.map((choice, index) => (
                     <React.Fragment key={index} >
-                      <TextField label="正解の選択肢" variant="standard" defaultValue={choice.answer} name='text'/>
+                      <TextField label="正解の選択肢" variant="standard" defaultValue={choice.answer} name='text' inputRef={choiceRefs[index]} />
                       <FormControlLabel control={<Radio />} value={choice.answer} label="" sx={{ mb: 2 }} name='valid' />
                     </React.Fragment>
                   ))
