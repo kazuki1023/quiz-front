@@ -38,7 +38,7 @@ const EditPage = () => {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const defaultChoice = data?.choices.find(choice => choice.valid === 1);
-
+  const defaultChoiceValid = data?.choices.find(choice => choice.valid === 1)?.valid || null;
   // idから問題を取得
   useEffect(() => {
     setIsLoading(true);
@@ -66,6 +66,15 @@ useEffect(() => {
     setChoiceRefs(newRefs);
   }
 }, [data]);
+const [valids, setValids] = useState<React.RefObject<HTMLInputElement>[]>([]);
+useEffect(() => {
+  if (data?.choices) {
+    // data.choicesの長さに基づいて新しいuseRef配列を作成
+    const newRefs = data.choices.map(() => React.createRef<HTMLInputElement>());
+    setValids(newRefs);
+  }
+}, [data]);
+
 
 
   if (isLoading) {
@@ -80,15 +89,20 @@ useEffect(() => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(event.currentTarget);
-
-    // ここでフォームデータを収集
-    const formData = new FormData(event.currentTarget);
-    console.log(formData);
-    const jsonData: Record<string, any> = {};
-    formData.forEach((value, key) => {
-      jsonData[key] = value;
-    });
+    const content = contentRef.current?.value;
+    const choices = choiceRefs.map(choiceRef => ({
+      text: choiceRef.current?.value,
+    }));
+    const valids = choiceRefs.map(validRef => ({
+      valid: validRef.current?.value,
+    }));
+    console.log(choiceRefs)
+    const jsonData = {
+      content,
+      choices,
+      valids,
+    };
+    console.log(jsonData);
 
     try {
       const response = await axios.put(`http://localhost/api/v1/quiz/${id}`, jsonData, {
@@ -139,14 +153,14 @@ useEffect(() => {
               </Button>
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue={defaultChoice ? defaultChoice.answer : ""}
+                defaultValue={defaultChoice ? defaultChoice.valid : ""}
                 name="choices[]"
               >
                 {
                   data?.choices.map((choice, index) => (
                     <React.Fragment key={index} >
                       <TextField label="正解の選択肢" variant="standard" defaultValue={choice.answer} name='text' inputRef={choiceRefs[index]} />
-                      <FormControlLabel control={<Radio />} value={choice.answer} label="" sx={{ mb: 2 }} name='valid' />
+                      <FormControlLabel control={<Radio value={choice.valid} inputRef={valids[index]} />}  label="" sx={{ mb: 2 }} name='valid' />
                     </React.Fragment>
                   ))
                 }
@@ -154,7 +168,7 @@ useEffect(() => {
             </Box>
             <Button type="submit" variant="contained" color="primary">
               更新する
-            </Button>
+            </Button>　
           </Container>
         </FormControl>
       </form>
