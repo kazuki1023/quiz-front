@@ -35,7 +35,8 @@ const EditPage = () => {
     console.log(data);
   };
 
-  const defaultChoiceValue = quizData.choices.find(choice => choice.valid === 1)?.valid;
+  const defaultChoiceValue = quizData.choices.find(choice => choice.valid === 1)?.answer;
+  console.log(defaultChoiceValue);
   useEffect(() => {
     axios.get(`http://localhost/api/v1/quiz/${id}`)
       .then(response => {
@@ -144,7 +145,7 @@ const EditPage = () => {
             name={"correctChoice"}
             control={control}
             rules={validationRules.content}
-            defaultValue={quizData.choices[2].valid}
+            defaultValue={defaultChoiceValue}
             render={({ field, fieldState }) => (
               <FormControl error={!!fieldState.error?.message}>
                 <FormLabel id="demo-radio-buttons-group-label" error={fieldState.error ? true : false}>正解の選択肢</FormLabel>
@@ -153,9 +154,9 @@ const EditPage = () => {
                   defaultValue="female"
                   {...field}
                 >
-                  <FormControlLabel value="1" control={<Radio />} label="選択肢１"  />
-                  <FormControlLabel value="2" control={<Radio />} label="選択肢２" />
-                  <FormControlLabel value="3" control={<Radio />} label="選択肢3"/>
+                  <FormControlLabel value={quizData.choices[0].answer} control={<Radio />} label="選択肢１"  />
+                  <FormControlLabel value={quizData.choices[1].answer} control={<Radio />} label="選択肢２" />
+                  <FormControlLabel value={quizData.choices[2].answer} control={<Radio />} label="選択肢3"/>
                   <FormHelperText sx={{ position: 'absolute', top: '100%', m: 0.5 }}>
                     {fieldState.error?.message}
                   </FormHelperText>
