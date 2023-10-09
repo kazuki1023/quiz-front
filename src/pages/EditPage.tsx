@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FormControl, FormHelperText, TextField, Typography, Box } from '@mui/material';
+import { FormControl, FormHelperText, TextField, Typography, Box, Button } from '@mui/material';
 import Header from '../components/admin/parts/Header';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -30,70 +30,96 @@ const EditPage = () => {
     <>
       <Header />
       {isLoading ? <Loader /> :
-        <Box component="form" sx={{ p: 2 , width: 4/5 , mx: 'auto', my: 2}}>
-            <Controller
-              name={"content"}
-              control={control}
-              rules={validationRules.comment}
-              render={({ field, fieldState }) => (
-                <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m: 2 }}>
-                  <TextField
-                    {...field}
-                    error={fieldState.error ? true : false}
-                    label="問題文"
-                    variant="outlined"
-                    fullWidth
-                    rows={4}
-                    multiline
-                  />
-                  <FormHelperText sx={{ position: 'absolute', top: '100%', m: 0.5 }}>
-                    {fieldState.error?.message}
-                  </FormHelperText>
-                </FormControl>
-              )}
-            />
-            <Controller
-              name={"content"}
-              control={control}
-              rules={validationRules.comment}
-              render={({ field, fieldState }) => (
-                <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m:2 }}>
-                  <TextField
-                    {...field}
-                    error={fieldState.error ? true : false}
-                    label="問題文"
-                    variant="outlined"
-                    fullWidth
-                    rows={4}
-                    multiline
-                  />
-                  <FormHelperText sx={{ position: 'absolute', top: '100%', m: 0.5 }}>
-                    {fieldState.error?.message}
-                  </FormHelperText>
-                </FormControl>
-              )}
-            />
-            <Controller
-              name={"content"}
-              control={control}
-              rules={validationRules.comment}
-              render={({ field, fieldState }) => (
-                <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m:2 }}>
-                  <TextField
-                    {...field}
-                    error={fieldState.error ? true : false}
-                    label="問題文"
-                    variant="outlined"
-                    fullWidth
-                    rows={4}
-                    multiline
-                  />
-                  <FormHelperText sx={{ position: 'absolute', top: '100%', m: 0.5 }}>
-                    {fieldState.error?.message}
-                  </FormHelperText>
-                </FormControl>
-              )}
-            />
+        <Box component="form" sx={{ p: 2, width: 4 / 5, mx: 'auto', my: 2 }}>
+          <Controller
+            name={"content"}
+            control={control}
+            rules={validationRules.comment}
+            render={({ field, fieldState }) => (
+              <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m: 2 }}>
+                <TextField
+                  {...field}
+                  error={fieldState.error ? true : false}
+                  label="問題文"
+                  variant="outlined"
+                  fullWidth
+                  rows={4}
+                  multiline
+                />
+                <FormHelperText sx={{ position: 'absolute', top: '100%', m: 0.5 }}>
+                  {fieldState.error?.message}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
+          <Controller
+            name={"content"}
+            control={control}
+            rules={validationRules.comment}
+            render={({ field, fieldState }) => (
+              <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m: 2 }}>
+                <TextField
+                  {...field}
+                  error={fieldState.error ? true : false}
+                  label="選択肢"
+                  variant="outlined"
+                  fullWidth
+                  rows={1}
+                  multiline
+                />
+                <FormHelperText sx={{ position: 'absolute', top: '100%', m: 0.5 }}>
+                  {fieldState.error?.message}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
+          <Controller
+            name={"content"}
+            control={control}
+            rules={validationRules.comment}
+            render={({ field, fieldState }) => (
+              <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m: 2 }}>
+                <TextField
+                  {...field}
+                  error={fieldState.error ? true : false}
+                  label="選択肢"
+                  variant="outlined"
+                  fullWidth
+                  rows={1}
+                  multiline
+                />
+                <FormHelperText sx={{ position: 'absolute', top: '100%', m: 0.5 }}>
+                  {fieldState.error?.message}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
+          <Controller
+            name={"content"}
+            control={control}
+            rules={validationRules.comment}
+            render={({ field, fieldState }) => (
+              <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m: 2 }}>
+                <TextField
+                  {...field}
+                  error={fieldState.error ? true : false}
+                  label="選択肢"
+                  variant="outlined"
+                  fullWidth
+                  rows={1}
+                  multiline
+                />
+                <FormHelperText sx={{ position: 'absolute', top: '100%', m: 0.5 }}>
+                  {fieldState.error?.message}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'center', my: 2}}>
+            <Button variant="contained" type="submit" sx={{ mx: 'auto', w: 1 }}>
+              登録・更新
+            </Button>
+          </Box>
         </Box>
       }
     </>
