@@ -1,4 +1,5 @@
-interface FormData {
+export interface FormData {
+  id: number;
   content: string;
   choice1: string;
   choice2: string;
@@ -8,6 +9,7 @@ interface FormData {
 
 export const TransformToApiFormat = (formData: FormData) => {
   const quiz = {
+    id: formData.id,
     content: formData.content,
     // imgや他の項目も必要であればここに追加
   };
