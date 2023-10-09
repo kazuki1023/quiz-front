@@ -168,7 +168,7 @@ useEffect(() => {
             </Box>
             <Button type="submit" variant="contained" color="primary">
               更新する
-            </Button>　
+            </Button>
           </Container>
         </FormControl>
       </form>
