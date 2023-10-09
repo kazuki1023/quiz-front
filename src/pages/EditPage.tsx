@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FormControl, FormHelperText, TextField, Typography, Box, Button } from '@mui/material';
+import { FormControl, FormHelperText, TextField, Typography, Box, Button, FormLabel, FormControlLabel, RadioGroup, Radio } from '@mui/material';
 import Header from '../components/admin/parts/Header';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -19,21 +19,33 @@ const EditPage = () => {
   const [isLoading, setIsLoading] = useState(true); // ローディング中かどうかの状態
   const { id } = useParams<{ id: string }>();
   const { control, handleSubmit, formState: { errors } } = useForm<FieldValues>();
+  const [quizData, setQuizData] = useState<{
+    id: number;
+    content: string;
+    img: string;
+    choices: Array<{ answer: string; valid: number; }>;
+  }>({
+    id: 0,
+    content: "",
+    img: "",
+    choices: []
+  });
 
   const onSubmit = (data: FieldValues) => {
     console.log(data);
   };
 
+  const defaultChoiceValue = quizData.choices.find(choice => choice.valid === 1)?.valid;
   useEffect(() => {
     axios.get(`http://localhost/api/v1/quiz/${id}`)
       .then(response => {
-        console.log(response.data.data)
+        setQuizData(response.data.data);
         setIsLoading(false);
+        console.log(response.data.data);
       }
       )
       .catch(error => console.error('Error fetching data:', error));
   }, [id])
-
 
   return (
     <>
@@ -43,6 +55,7 @@ const EditPage = () => {
           <Controller
             name={"content"}
             control={control}
+            defaultValue={quizData.content}
             rules={validationRules.content}
             render={({ field, fieldState }) => (
               <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m: 2 }}>
@@ -65,6 +78,7 @@ const EditPage = () => {
             name={"choice1"}
             control={control}
             rules={validationRules.content}
+            defaultValue={quizData.choices[0].answer}
             render={({ field, fieldState }) => (
               <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m: 2 }}>
                 <TextField
@@ -86,6 +100,7 @@ const EditPage = () => {
             name={"chioce2"}
             control={control}
             rules={validationRules.content}
+            defaultValue={quizData.choices[1].answer}
             render={({ field, fieldState }) => (
               <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m: 2 }}>
                 <TextField
@@ -107,6 +122,7 @@ const EditPage = () => {
             name={"choice3"}
             control={control}
             rules={validationRules.content}
+            defaultValue={quizData.choices[2].answer}
             render={({ field, fieldState }) => (
               <FormControl error={!!fieldState.error?.message} sx={{ width: '100%', m: 2 }}>
                 <TextField
@@ -124,7 +140,30 @@ const EditPage = () => {
               </FormControl>
             )}
           />
-          <Box sx={{ display: 'flex', justifyContent: 'center', my: 2}}>
+          <Controller
+            name={"correctChoice"}
+            control={control}
+            rules={validationRules.content}
+            defaultValue={quizData.choices[2].valid}
+            render={({ field, fieldState }) => (
+              <FormControl error={!!fieldState.error?.message}>
+                <FormLabel id="demo-radio-buttons-group-label" error={fieldState.error ? true : false}>正解の選択肢</FormLabel>
+                <RadioGroup
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  defaultValue="female"
+                  {...field}
+                >
+                  <FormControlLabel value="1" control={<Radio />} label="選択肢１"  />
+                  <FormControlLabel value="2" control={<Radio />} label="選択肢２" />
+                  <FormControlLabel value="3" control={<Radio />} label="選択肢3"/>
+                  <FormHelperText sx={{ position: 'absolute', top: '100%', m: 0.5 }}>
+                    {fieldState.error?.message}
+                  </FormHelperText>
+                </RadioGroup>
+              </FormControl>
+            )}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
             <Button variant="contained" type="submit" sx={{ mx: 'auto', w: 1 }}>
               更新
             </Button>
