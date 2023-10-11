@@ -17,16 +17,19 @@ export const TransformToApiFormat = (formData: FormData) => {
   // choices部分の変換
   const choices = [
     {
+      quiz_id: formData.id,
       answer: formData.choice1,
-      valid: formData.correctChoice === "choice1"
+      valid: formData.choice1 === formData.correctChoice
     },
     {
+      quiz_id: formData.id,
       answer: formData.choice2,
-      valid: formData.correctChoice === "choice2"
+      valid: formData.choice2 === formData.correctChoice
     },
     {
+      quiz_id: formData.id,
       answer: formData.choice3,
-      valid: formData.correctChoice === "choice3"
+      valid: formData.choice3 === formData.correctChoice
     }
   ];
 
