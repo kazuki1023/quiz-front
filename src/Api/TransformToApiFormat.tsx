@@ -8,12 +8,6 @@ export interface FormData {
 }
 
 export const TransformToApiFormat = (formData: FormData) => {
-  const quiz = {
-    id: formData.id,
-    content: formData.content,
-    // imgや他の項目も必要であればここに追加
-  };
-
   // choices部分の変換
   const choices = [
     {
@@ -34,7 +28,8 @@ export const TransformToApiFormat = (formData: FormData) => {
   ];
 
   return {
-    quiz: quiz,
+    id: formData.id,
+    content: formData.content,
     choices: choices
   };
 }
