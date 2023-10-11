@@ -6,8 +6,10 @@ import LoginButton from '../Auth/login';
 import Header from '../components/user/Header';
 import Quiz from '../components/quiz/Quiz';
 import Footer from '../components/user/Footer';
+import Loader from '../components/Loader';
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(true); // ローディング中かどうかの状態
   const [data, setData] = useState<Array<{
     id: number;
     content: string;
@@ -35,6 +37,7 @@ const Home = () => {
         });
 
         setData(formattedData);
+        setIsLoading(false); // ローディングが終わったのでfalseに
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);
@@ -42,12 +45,13 @@ const Home = () => {
     <>
       <Header />
       <LoginButton />
-      {/* {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : 'Loading...'} */}
-      <div className="p-quiz-container l-container">
-        {data.map((quiz, index) => (
-          <Quiz key={index} quizData={quiz} />
-        ))}
-      </div>
+      {isLoading ? <Loader /> :
+        <div className="p-quiz-container l-container">
+          {data.map((quiz, index) => (
+            <Quiz key={index} quizData={quiz} />
+          ))}
+        </div>
+      }
       <Footer />
     </>
   );
